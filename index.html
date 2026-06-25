@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>browLogin — Anti-detect browser by Idexal</title>
-<meta name="description" content="browLogin is a free, self-hostable anti-detect browser. Isolated profiles with unique fingerprints so every account stays clean and separate — a free alternative to GoLogin." />
-<meta property="og:title" content="browLogin — Anti-detect browser by Idexal" />
-<meta property="og:description" content="Isolated browser profiles, unique fingerprints, multi-account — free and self-hostable." />
+<title>browLogin — Anti-detect browser with a built-in AI agent, by Idexal</title>
+<meta name="description" content="browLogin runs unlimited browser identities, undetected — engine-level fingerprint spoofing, per-profile proxies, auto geo-coherence, Playwright/CDP automation, and a built-in AI agent. Free, local, self-hostable. The open alternative to GoLogin." />
+<meta property="og:title" content="browLogin — Anti-detect browser with a built-in AI agent" />
+<meta property="og:description" content="Unlimited identities, engine-level spoofing, managed proxies, automation, and a native AI agent. Free & local." />
 <meta property="og:type" content="website" />
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%230e7490'/><stop offset='1' stop-color='%2322d3ee'/></linearGradient></defs><rect width='32' height='32' rx='8' fill='url(%23g)'/><path d='M16 5l9 4v6c0 5-4 9-9 11-5-2-9-6-9-11V9z' fill='white' opacity='.92'/></svg>" />
 <script>document.documentElement.classList.add('js')</script>
@@ -17,7 +17,7 @@
   :root{
     --navy:#070a12; --ink:#e8edf7; --muted:#9aa6bd; --faint:#6b7689;
     --blue:#3b82f6; --blue-2:#60a5fa; --cyan:#38bdf8; --teal:#22d3ee; --line:rgba(255,255,255,.08);
-    --card:rgba(255,255,255,.025); --card-2:rgba(255,255,255,.045); --green:#34d399;
+    --card:rgba(255,255,255,.025); --card-2:rgba(255,255,255,.045); --green:#34d399; --amber:#fbbf24;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -38,7 +38,7 @@
   .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px;letter-spacing:-.02em}
   .mark{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;background:linear-gradient(135deg,#0e7490,var(--teal));color:#fff;font-weight:800;font-size:15px;box-shadow:0 4px 16px rgba(34,211,238,.35)}
   .brand small{color:var(--faint);font-weight:500;font-size:12px}
-  .nav-links{display:flex;gap:26px;margin-left:20px;color:var(--muted);font-size:14px;font-weight:500}
+  .nav-links{display:flex;gap:24px;margin-left:20px;color:var(--muted);font-size:14px;font-weight:500}
   .nav-links a:hover{color:var(--ink)}
   .nav-cta{margin-left:auto;display:flex;gap:10px;align-items:center}
   .btn{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:14px;padding:9px 16px;border-radius:10px;transition:.18s;border:1px solid transparent;cursor:pointer}
@@ -46,22 +46,36 @@
   .btn-primary:hover{transform:translateY(-1px);box-shadow:0 10px 30px rgba(34,211,238,.45)}
   .btn-ghost{border-color:var(--line);color:var(--ink)}
   .btn-ghost:hover{background:var(--card-2);border-color:rgba(255,255,255,.18)}
+  .burger{display:none;width:40px;height:40px;border:1px solid var(--line);border-radius:9px;background:none;color:var(--ink);font-size:20px;cursor:pointer}
+  html.js section{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
+  html.js section.in{opacity:1;transform:none}
 
-  .hero{text-align:center;padding:104px 0 56px}
-  .pill{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--teal);background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.25);padding:6px 14px;border-radius:999px;margin-bottom:26px}
+  .hero{text-align:center;padding:100px 0 40px}
+  .pill{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--teal);background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.25);padding:6px 14px;border-radius:999px;margin-bottom:24px}
   .pill .dot{width:7px;height:7px;border-radius:50%;background:var(--teal);box-shadow:0 0 8px var(--teal)}
-  h1{font-size:clamp(40px,6.2vw,72px);font-weight:800;line-height:1.04;letter-spacing:-.04em;margin-bottom:22px}
+  h1{font-size:clamp(38px,6vw,68px);font-weight:800;line-height:1.04;letter-spacing:-.04em;margin-bottom:20px}
   h1 .grad{background:linear-gradient(120deg,var(--teal),var(--blue-2));-webkit-background-clip:text;background-clip:text;color:transparent}
-  .sub{font-size:clamp(16px,2vw,20px);color:var(--muted);max-width:640px;margin:0 auto 34px}
+  .sub{font-size:clamp(16px,2vw,20px);color:var(--muted);max-width:660px;margin:0 auto 30px}
   .hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:18px}
   .btn-lg{padding:14px 26px;font-size:15px;border-radius:12px}
-  .note{color:var(--faint);font-size:13.5px}
-  .note b{color:var(--green)}
+  .stats{display:flex;flex-wrap:wrap;gap:10px 22px;justify-content:center;color:var(--faint);font-size:13.5px;margin-top:6px}
+  .stats b{color:var(--teal);font-weight:700}
 
-  section{padding:64px 0}
+  .seeds{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:780px;margin:46px auto 0;text-align:left}
+  .seed{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+  .seed-top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .seed-av{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;font-weight:800;color:#04181c;background:linear-gradient(135deg,#0e7490,var(--teal))}
+  .seed-name{font-weight:700;font-size:13.5px}.seed-name span{display:block;color:var(--faint);font-weight:400;font-size:11px}
+  .badge{margin-left:auto;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:2px 8px;border-radius:999px}
+  .badge.live{color:var(--green);background:rgba(52,211,153,.12)}
+  .badge.iso{color:var(--cyan);background:rgba(56,189,248,.12)}
+  .seed-row{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);padding:3px 0;border-top:1px solid var(--line)}
+  .seed-row span{color:var(--ink);font-family:'JetBrains Mono',monospace}
+
+  section{padding:60px 0}
   .eyebrow{font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:12px}
   h2{font-size:clamp(26px,3.4vw,38px);font-weight:800;letter-spacing:-.03em;line-height:1.1}
-  .lead{color:var(--muted);font-size:16px;max-width:620px;margin-top:14px}
+  .lead{color:var(--muted);font-size:16px;max-width:640px;margin-top:14px}
   .center{text-align:center}.center .lead{margin-left:auto;margin-right:auto}
 
   .feats{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
@@ -70,36 +84,31 @@
   .feat .ico{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;font-size:19px;background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.22);margin-bottom:14px}
   .feat h3{font-size:16px;font-weight:700;margin-bottom:7px;letter-spacing:-.01em}
   .feat p{color:var(--muted);font-size:14px}
+  .feat .tagy{display:inline-block;margin-top:9px;font-size:11px;font-weight:700;color:var(--teal);background:rgba(34,211,238,.1);border-radius:999px;padding:2px 9px}
 
-  .uses{display:flex;flex-wrap:wrap;gap:10px;margin-top:32px;justify-content:center}
-  .use{font-size:13.5px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:9px 16px}
-  .use span{color:var(--teal)}
-
-  .compare{max-width:680px;margin:40px auto 0;background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}
-  .crow{display:grid;grid-template-columns:1.4fr 1fr 1fr;align-items:center}
-  .crow>div{padding:15px 20px;border-bottom:1px solid var(--line);font-size:14px}
+  .compare{max-width:760px;margin:40px auto 0;background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+  .crow{display:grid;grid-template-columns:1.5fr 1fr 1fr;align-items:center}
+  .crow>div{padding:14px 20px;border-bottom:1px solid var(--line);font-size:14px}
   .crow:last-child>div{border-bottom:none}
-  .chead>div{font-weight:700;color:var(--muted);font-size:12px;letter-spacing:.05em;text-transform:uppercase;background:rgba(255,255,255,.02)}
+  .chead>div{font-weight:700;color:var(--muted);font-size:12px;letter-spacing:.04em;text-transform:uppercase;background:rgba(255,255,255,.02)}
   .chead .us{color:var(--teal)}
-  .cyes{color:var(--green);font-weight:700}.cno{color:var(--faint)}
   .crow .ft{color:var(--muted)}
+  .cyes{color:var(--green);font-weight:600}.cno{color:var(--faint)}.cpart{color:var(--amber)}
 
-  .cta-band{text-align:center;background:linear-gradient(135deg,rgba(34,211,238,.12),rgba(59,130,246,.06));border:1px solid rgba(34,211,238,.22);border-radius:20px;padding:50px 24px}
+  .download{max-width:720px;margin:0 auto;background:linear-gradient(135deg,rgba(34,211,238,.1),rgba(59,130,246,.05));border:1px solid rgba(34,211,238,.22);border-radius:20px;padding:40px 28px;text-align:center}
+  .dl-meta{color:var(--faint);font-size:13.5px;margin-top:8px}
+  .reqs{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;margin-top:22px;font-size:13px;color:var(--muted)}
+  .reqs span{color:var(--teal)}
 
   footer{border-top:1px solid var(--line);padding:34px 0;color:var(--faint);font-size:13.5px;text-align:center;margin-top:40px}
   footer a{color:var(--muted)}footer a:hover{color:var(--ink)}
 
-  .burger{display:none;width:40px;height:40px;border:1px solid var(--line);border-radius:9px;background:none;color:var(--ink);font-size:20px;cursor:pointer}
-  html.js section{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
-  html.js section.in{opacity:1;transform:none}
   @media(max-width:820px){
-    .nav-links{display:none}
-    .btn-ghost{display:none}
-    .burger{display:grid;place-items:center}
+    .nav-links{display:none}.btn-ghost{display:none}.burger{display:grid;place-items:center}
     nav.open .nav-links{display:flex;position:absolute;left:0;right:0;top:66px;flex-direction:column;gap:4px;background:rgba(7,10,18,.98);border-bottom:1px solid var(--line);padding:14px 24px;margin:0}
     nav.open .nav-links a{padding:9px 0}
-    .feats{grid-template-columns:1fr}
-    .crow{grid-template-columns:1.3fr .85fr .85fr}
+    .seeds,.feats{grid-template-columns:1fr}
+    .crow{grid-template-columns:1.4fr .8fr .8fr}
   }
 </style>
 </head>
@@ -111,83 +120,97 @@
   <a class="brand" href="/"><span class="mark">⛨</span> browLogin <small>by idexal</small></a>
   <div class="nav-links">
     <a href="#features">Features</a>
-    <a href="#uses">Use cases</a>
-    <a href="#compare">vs GoLogin</a>
+    <a href="#compare">Compare</a>
+    <a href="#download">Download</a>
   </div>
   <div class="nav-cta">
-    <a class="btn btn-ghost" href="https://github.com/idexal">GitHub</a>
-    <a class="btn btn-primary" href="https://github.com/idexal">Get browLogin</a>
+    <a class="btn btn-ghost" href="https://idexal.com">Idexal</a>
+    <a class="btn btn-primary" href="#download">Download</a>
   </div>
   <button class="burger" aria-label="Menu" aria-expanded="false">☰</button>
 </nav></div></header>
 
 <section class="hero"><div class="wrap">
-  <span class="pill"><span class="dot"></span> Anti-detect browser · free &amp; self-hostable</span>
-  <h1>Every account,<br><span class="grad">its own browser</span></h1>
-  <p class="sub">browLogin gives each profile a unique, consistent fingerprint and a fully isolated
-     session — so you can run hundreds of accounts that sites can never link together.</p>
+  <span class="pill"><span class="dot"></span> Anti-detect browser · free &amp; local · built-in AI agent</span>
+  <h1>Run unlimited identities,<br><span class="grad">undetected</span></h1>
+  <p class="sub">browLogin gives every profile its own fingerprint, proxy, timezone, and device —
+     spoofed at the engine level, never leaking, fully on your machine.</p>
   <div class="hero-cta">
-    <a class="btn btn-primary btn-lg" href="https://github.com/idexal">Download free →</a>
-    <a class="btn btn-ghost btn-lg" href="#features">See how it works</a>
+    <a class="btn btn-primary btn-lg" href="#download">Download for Windows →</a>
+    <a class="btn btn-ghost btn-lg" href="#features">Explore features</a>
   </div>
-  <div class="note">No subscription. <b>$0</b> — a free, open alternative to the $49–199/mo tools.</div>
-</div></section>
+  <div class="stats"><span><b>100+</b> proxy pool</span><span><b>28</b> countries</span><span><b>per-seed</b> fingerprints</span><span><b>Playwright</b>-ready</span></div>
 
-<section id="features"><div class="wrap">
-  <div class="center">
-    <div class="eyebrow">Built to stay invisible</div>
-    <h2>Profiles that never cross paths</h2>
-    <p class="lead">Each browLogin profile is a separate identity, down to the fingerprint — isolated, consistent, and yours.</p>
-  </div>
-  <div class="feats">
-    <div class="feat"><div class="ico">🪪</div><h3>Unique fingerprints</h3><p>Canvas, WebGL, fonts, timezone, hardware — each profile is a distinct, consistent identity that holds across sessions.</p></div>
-    <div class="feat"><div class="ico">📦</div><h3>Fully isolated profiles</h3><p>Separate cookies, storage, and cache per profile. Nothing leaks between accounts — ever.</p></div>
-    <div class="feat"><div class="ico">🌐</div><h3>A proxy per profile</h3><p>Assign an HTTP/SOCKS proxy to each identity so its IP matches its fingerprint and location.</p></div>
-    <div class="feat"><div class="ico">👥</div><h3>Run hundreds at once</h3><p>Manage and launch large batches of profiles from one place, organised by project, tag, or team.</p></div>
-    <div class="feat"><div class="ico">🤖</div><h3>Automation-ready</h3><p>Drive profiles programmatically — pairs naturally with Idexal's agent browser for full automation.</p></div>
-    <div class="feat"><div class="ico">🔒</div><h3>Self-hosted &amp; private</h3><p>Your profiles live on your machine or your server. No cloud account required, no data handed over.</p></div>
-  </div>
-</div></section>
-
-<section id="uses"><div class="wrap center">
-  <div class="eyebrow">Who it's for</div>
-  <h2>One tool, many accounts</h2>
-  <div class="uses">
-    <div class="use"><span>◆</span> Affiliate &amp; CPA marketing</div>
-    <div class="use"><span>◆</span> E-commerce multi-accounting</div>
-    <div class="use"><span>◆</span> Ad-account management</div>
-    <div class="use"><span>◆</span> Social media at scale</div>
-    <div class="use"><span>◆</span> Web scraping &amp; research</div>
-    <div class="use"><span>◆</span> Agencies &amp; teams</div>
-  </div>
-</div></section>
-
-<section id="compare"><div class="wrap center">
-  <div class="eyebrow">The honest comparison</div>
-  <h2>Everything they charge for — free</h2>
-  <div class="compare" style="text-align:left">
-    <div class="crow chead"><div>Feature</div><div class="us">browLogin</div><div>GoLogin</div></div>
-    <div class="crow"><div class="ft">Unique fingerprints</div><div class="cyes">✓</div><div class="cyes">✓</div></div>
-    <div class="crow"><div class="ft">Isolated profiles + proxies</div><div class="cyes">✓</div><div class="cyes">✓</div></div>
-    <div class="crow"><div class="ft">Self-hosted &amp; private</div><div class="cyes">✓</div><div class="cno">—</div></div>
-    <div class="crow"><div class="ft">Open source</div><div class="cyes">✓</div><div class="cno">—</div></div>
-    <div class="crow"><div class="ft">Price</div><div class="cyes">Free</div><div class="cno">$49–199/mo</div></div>
-  </div>
-</div></section>
-
-<section><div class="wrap">
-  <div class="cta-band">
-    <h2>Take your accounts off the leash</h2>
-    <p class="lead" style="margin:14px auto 0">Free, open, and self-hostable. Download browLogin and give every account the clean identity it deserves.</p>
-    <div class="hero-cta" style="margin-top:28px">
-      <a class="btn btn-primary btn-lg" href="https://github.com/idexal">Download free →</a>
-      <a class="btn btn-ghost btn-lg" href="https://idexal.com">Explore Idexal</a>
+  <div class="seeds">
+    <div class="seed">
+      <div class="seed-top"><div class="seed-av">A</div><div class="seed-name">Atlas<span>seed-7741</span></div><span class="badge live">Live</span></div>
+      <div class="seed-row">Proxy <span>DE · SOCKS5</span></div>
+      <div class="seed-row">Timezone <span>UTC+1</span></div>
+    </div>
+    <div class="seed">
+      <div class="seed-top"><div class="seed-av">N</div><div class="seed-name">Nimbus<span>seed-2208</span></div><span class="badge live">Live</span></div>
+      <div class="seed-row">Proxy <span>US · HTTP</span></div>
+      <div class="seed-row">Fingerprint <span>Sealed</span></div>
+    </div>
+    <div class="seed">
+      <div class="seed-top"><div class="seed-av">O</div><div class="seed-name">Orbit<span>seed-9034</span></div><span class="badge iso">Isolated</span></div>
+      <div class="seed-row">Proxy <span>—</span></div>
+      <div class="seed-row">Storage <span>Sandboxed</span></div>
     </div>
   </div>
 </div></section>
 
+<section id="features"><div class="wrap">
+  <div class="center">
+    <div class="eyebrow">Built for undetectable, scalable browsing</div>
+    <h2>Engine-level isolation, not script tricks</h2>
+    <p class="lead">Deep spoofing, managed proxies, geo-coherence, and automation — in one polished
+       local desktop app, with a built-in agent no other tool has.</p>
+  </div>
+  <div class="feats">
+    <div class="feat"><div class="ico">📦</div><h3>Isolated profiles</h3><p>Unlimited profiles, each fully isolated — separate cookies, storage, cache, and identity. Zero cross-contamination.</p></div>
+    <div class="feat"><div class="ico">🪪</div><h3>Deep fingerprint spoofing</h3><p>Canvas, WebGL, Audio, Fonts, and WebRTC spoofed at the <em>engine</em> level, per seed — undetectable to JavaScript checks.</p><span class="tagy">Open fingerprint-chromium</span></div>
+    <div class="feat"><div class="ico">🌐</div><h3>Per-profile proxies</h3><p>HTTP &amp; SOCKS5 with auth, a managed pool, round-robin assignment, and one-click live health checks.</p></div>
+    <div class="feat"><div class="ico">🧭</div><h3>Geo-coherence</h3><p>Timezone and language auto-match each proxy's country, so IP, timezone, and locale never contradict.</p></div>
+    <div class="feat"><div class="ico">⚙️</div><h3>Automation</h3><p>A local API plus Playwright/CDP per profile — drive every profile programmatically, at scale.</p></div>
+    <div class="feat"><div class="ico">🤖</div><h3>Built-in AI agent</h3><p>A native agent connected to <code>api.idexal.com</code> — create, launch, and manage profiles in plain language, with MCP tools.</p><span class="tagy">No other tool has this</span></div>
+  </div>
+</div></section>
+
+<section id="compare"><div class="wrap center">
+  <div class="eyebrow">A fair, factual comparison</div>
+  <h2>How browLogin compares</h2>
+  <div class="compare" style="text-align:left">
+    <div class="crow chead"><div>Feature</div><div class="us">browLogin</div><div>GoLogin</div></div>
+    <div class="crow"><div class="ft">Unlimited local profiles</div><div class="cyes">Unlimited</div><div class="cpart">Limited on free</div></div>
+    <div class="crow"><div class="ft">Engine-level spoofing</div><div class="cyes">Open engine</div><div class="cno">Closed</div></div>
+    <div class="crow"><div class="ft">Managed proxies + health-check</div><div class="cyes">Built in</div><div class="cpart">Partial</div></div>
+    <div class="crow"><div class="ft">Auto geo-coherence</div><div class="cyes">Automatic</div><div class="cpart">Varies</div></div>
+    <div class="crow"><div class="ft">Automation (Playwright/CDP/API)</div><div class="cyes">All three</div><div class="cpart">API only</div></div>
+    <div class="crow"><div class="ft">Built-in AI agent (+ MCP)</div><div class="cyes">Native</div><div class="cno">—</div></div>
+    <div class="crow"><div class="ft">Runs fully local · price</div><div class="cyes">Yes · Free</div><div class="cno">Cloud · Paid</div></div>
+  </div>
+  <p class="dl-meta" style="margin-top:14px">Also ahead of MoreLogin, AdsPower, and Multilogin on the open engine, native agent, and local-first design.</p>
+</div></section>
+
+<section id="download"><div class="wrap">
+  <div class="download">
+    <div class="eyebrow">Download</div>
+    <h2>Run identities that never leak</h2>
+    <p class="lead" style="margin:12px auto 0">Free to install, fast to set up. Create your first isolated profile in minutes.</p>
+    <div class="hero-cta" style="margin-top:24px">
+      <a class="btn btn-primary btn-lg" href="https://github.com/idexal/web-browlogin/releases/latest">Download installer (.exe) →</a>
+    </div>
+    <div class="dl-meta">Windows 10/11 (64-bit) · v0.1.0 · ~77 MB</div>
+    <div class="reqs">
+      <span>◆</span> 4 GB RAM (8 GB rec.) &nbsp; <span>◆</span> 1 GB disk &nbsp; <span>◆</span> Internet for proxies + agent
+    </div>
+    <p class="dl-meta" style="margin-top:18px">macOS &amp; Linux builds are on the roadmap — want an early build? Reach out via <a href="https://idexal.com" style="color:var(--teal)">idexal.com</a>.</p>
+  </div>
+</div></section>
+
 <footer><div class="wrap">
-  browLogin is part of <a href="https://idexal.com">Idexal</a> · <a href="https://github.com/idexal">GitHub</a> · <a href="https://browser-ai.idexal.com">Idexal Browser</a>
+  browLogin — the anti-detect browser with a built-in agent. Part of <a href="https://idexal.com">Idexal</a> · <a href="https://github.com/idexal">GitHub</a> · <a href="https://browser-ai.idexal.com">Idexal Browser</a>
   <div style="margin-top:10px">© 2026 Idexal · <span class="mono">browlogin.idexal.com</span></div>
 </div></footer>
 <script>
